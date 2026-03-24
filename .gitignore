@@ -1,0 +1,48 @@
+# ---- 内部開発資料（コミット絶対禁止）----
+# ゲート1: .gitignore によるパッシブ除外
+# ゲート2: .git/hooks/pre-commit によるアクティブ検証
+*.docx
+*.xlsx
+*.pptx
+*.pdf
+docs/internal/
+reports/
+*_report.*
+*_handover.*
+*引き継ぎ*
+*レポート*
+*調査*
+*見積*
+.reference/
+products.csv
+
+# ---- セッション管理（内部のみ）----
+HANDOFF.md
+tasks/
+
+# ---- Claude Code ローカル設定 ----
+.claude/
+
+# ---- FreeCAD 作業ファイル ----
+*.FCStd1
+*.FCBak
+/dwg_backup/
+/output/
+
+# ---- 環境・認証情報 ----
+.env
+*.key
+*.pem
+*.secret
+
+# ---- Python ----
+__pycache__/
+*.pyc
+.venv/
+
+# ---- Node.js ----
+node_modules/
+
+# ---- OS ----
+Thumbs.db
+.DS_Store
