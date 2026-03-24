@@ -1,11 +1,12 @@
 # ---- 内部開発資料（コミット絶対禁止）----
 # ゲート1: .gitignore によるパッシブ除外
 # ゲート2: .git/hooks/pre-commit によるアクティブ検証
+docs/
+scripts/
 *.docx
 *.xlsx
 *.pptx
 *.pdf
-docs/internal/
 reports/
 *_report.*
 *_handover.*

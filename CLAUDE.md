@@ -3,9 +3,9 @@
 ## プロジェクト概要
 
 AutoCAD → FreeCAD 1.0 + Claude Code MCP 移行プロジェクト。
-建材の製造図面作図を自動化する。
+MDF木質建材（ドア枠・窓枠等）の製造図面作図を自動化する。
 
-## ドキュメント体系
+## ドキュメント体系（ローカル専用・コミット対象外）
 
 | ファイル                     | 内容                                                     |
 | ---------------------------- | -------------------------------------------------------- |
@@ -16,12 +16,16 @@ AutoCAD → FreeCAD 1.0 + Claude Code MCP 移行プロジェクト。
 | `docs/04-operations.md`      | 運用・保守手順書（トラブルシューティング含む）           |
 | `docs/05-release-plan.md`    | リリース計画（マイルストーン・ガントチャート・進捗管理） |
 
+> 上記はすべてローカル専用。`.gitignore` で除外済み。
+
 ## コミット対象外ポリシー
 
 以下は絶対にコミットしないこと（2層ゲートで保護）:
 
 | 対象                                  | 理由                                   | ゲート                    |
 | ------------------------------------- | -------------------------------------- | ------------------------- |
+| `docs/`                               | 内部開発資料                           | .gitignore + pre-commit   |
+| `scripts/`                            | 内部スクリプト                         | .gitignore + pre-commit   |
 | `HANDOFF.md`                          | セッション引き継ぎ（内部）             | .gitignore + pre-commit   |
 | `.claude/`                            | Claude Code ローカル設定               | .gitignore + pre-commit   |
 | `.reference/`                         | 内部資料の原本                         | .gitignore + pre-commit   |
@@ -39,10 +43,11 @@ AutoCAD → FreeCAD 1.0 + Claude Code MCP 移行プロジェクト。
 
 ## 技術スタック
 
-- **CAD**: FreeCAD 1.0（PartDesign + TechDraw + Spreadsheet）
+- **CAD**: FreeCAD 1.0（テンプレート設計・DXF検証）
+- **図面生成**: ezdxf（Pythonライブラリ、パラメトリックDXF生成）— ADR-0003
 - **MCP**: contextform/freecad-mcp（推奨）/ neka-nat/freecad-mcp（バックアップ）
-- **変換**: ODA File Converter（DWG → DXF）
-- **スクリプト**: Python（FreeCAD内蔵）
+- **変換**: ODA File Converter（DWG → DXF、DXF → PDF）
+- **スクリプト**: Python（FreeCAD内蔵 + ezdxf）
 
 ## 検証コマンド
 
@@ -58,10 +63,6 @@ python tasks/check_progress.py --apply
 - `docs/05-release-plan.md` のチェックボックスと残タスク数を更新
 - `--apply` なしでドライラン（変更せず結果のみ表示）
 - MCP接続チェックは `check_freecad_connection` で別途実施
-
-### パイプライン検証
-
-パイプライン構築（C-1）後に追加予定。
 
 ### コミット前検証
 
