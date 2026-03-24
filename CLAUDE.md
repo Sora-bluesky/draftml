@@ -18,13 +18,24 @@ AutoCAD → FreeCAD 1.0 + Claude Code MCP 移行プロジェクト。
 
 ## コミット対象外ポリシー
 
-以下は絶対にコミットしないこと:
+以下は絶対にコミットしないこと（2層ゲートで保護）:
 
-- `.reference/` — 内部資料の原本
-- `tasks/` — 進捗管理ファイル
-- `*.docx`, `*.xlsx`, `*.pptx`, `*.pdf` — バイナリ形式の内部資料
-- `output/` — 生成図面（成果物でありソースではない）
-- `.env`, `*.key`, `*.pem` — 認証情報
+| 対象                                  | 理由                                   | ゲート                    |
+| ------------------------------------- | -------------------------------------- | ------------------------- |
+| `HANDOFF.md`                          | セッション引き継ぎ（内部）             | .gitignore + pre-commit   |
+| `.claude/`                            | Claude Code ローカル設定               | .gitignore + pre-commit   |
+| `.reference/`                         | 内部資料の原本                         | .gitignore + pre-commit   |
+| `tasks/`                              | 進捗管理ファイル                       | .gitignore + pre-commit   |
+| `*.docx`, `*.xlsx`, `*.pptx`, `*.pdf` | バイナリ形式の内部資料                 | .gitignore + pre-commit   |
+| `output/`                             | 生成図面（成果物でありソースではない） | .gitignore                |
+| `.env`, `*.key`, `*.pem`, `*.secret`  | 認証情報                               | .gitignore + pre-commit   |
+| プライベートパス (`C:\Users\...`)     | 個人情報                               | pre-commit (content scan) |
+
+**ゲート構成**:
+
+- **ゲート1**: `.gitignore` — パッシブ除外（パターンマッチ）
+- **ゲート2**: `.git/hooks/pre-commit` — アクティブ検証（パス・拡張子・コンテンツスキャン）
+- `--no-verify` でのバイパスは禁止
 
 ## 技術スタック
 
@@ -35,4 +46,23 @@ AutoCAD → FreeCAD 1.0 + Claude Code MCP 移行プロジェクト。
 
 ## 検証コマンド
 
-現時点では未定義。パイプライン構築（C-1）後に追加予定。
+### 進捗自動更新
+
+セッション開始時に以下を実行し、ロードマップを自動更新する:
+
+```bash
+python tasks/check_progress.py --apply
+```
+
+- タスク完了条件をファイルシステムの実態から自動判定
+- `docs/05-release-plan.md` のチェックボックスと残タスク数を更新
+- `--apply` なしでドライラン（変更せず結果のみ表示）
+- MCP接続チェックは `check_freecad_connection` で別途実施
+
+### パイプライン検証
+
+パイプライン構築（C-1）後に追加予定。
+
+### コミット前検証
+
+pre-commit hook が自動実行される（手動実行不要）。内部ファイルやプライベートパスの混入を検出してコミットを拒否する。

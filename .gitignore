@@ -1,4 +1,6 @@
-# ---- 内部資料・機密ファイル（コミット禁止）----
+# ---- 内部開発資料（コミット絶対禁止）----
+# ゲート1: .gitignore によるパッシブ除外
+# ゲート2: .git/hooks/pre-commit によるアクティブ検証
 *.docx
 *.xlsx
 *.pptx
@@ -12,9 +14,14 @@ reports/
 *調査*
 *見積*
 .reference/
+products.csv
 
-# ---- 進捗管理（内部のみ）----
+# ---- セッション管理（内部のみ）----
+HANDOFF.md
 tasks/
+
+# ---- Claude Code ローカル設定 ----
+.claude/
 
 # ---- FreeCAD 作業ファイル ----
 *.FCStd1
@@ -26,6 +33,7 @@ tasks/
 .env
 *.key
 *.pem
+*.secret
 
 # ---- Python ----
 __pycache__/
