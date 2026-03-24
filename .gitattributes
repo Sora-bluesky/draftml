@@ -1,0 +1,8 @@
+# Line endings
+* text=auto
+
+# DXF files: treat as binary (large CAD text format, not human-editable)
+*.dxf binary
+
+# DWG files: always binary
+*.dwg binary
